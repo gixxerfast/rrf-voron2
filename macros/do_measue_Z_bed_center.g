@@ -1,0 +1,11 @@
+G90
+M558 K0 H4 F100
+G1 Z5
+G1 X150 Y150
+echo "checking Z height"
+G30 K0 S-1 
+G1 Z5
+G30 K0 S-1 
+G1 Z5
+G30 K0 S-1 
+G1 Z5
