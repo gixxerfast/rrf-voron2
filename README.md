@@ -1,12 +1,14 @@
 # rrf-voron2
-RepRap-firmaware for Duet and my Voron 2.4
+RepRap-firmware configuration for Duet/Voron 2.4
 
-This is mostly a backup storage gor my Voron2 Duet RRF-configuration
+This is a backup storage for my Voron2 Duet RRF-configuration. It is not a complete reference configuration. 
+Some files are obsolete, untested, to be removed or changed. Use it at your own risk only. 
 
-# Do not use this without understanding what it does. It can destroy your printer!!
+# Please, Do not use this without understanding what it does. It can destroy your printer!!
 
-# Yes, it has a working version of AutoZ
-But you really need to understand how it works and adjust to your config. I can 100% say that it will NOT work on your unless you adapt it.
+# It has a working version of AutoZ
+It updates the baby-step value to the probe offset.
+You really need to understand how it works and adjust to your config. It will NOT work in your configuration unless you adapt it and probably you will bend some extrusions.
 
 # Credits
 Much of this is configuration is based on other peoples work:
@@ -17,3 +19,11 @@ Much of this is configuration is based on other peoples work:
  - https://github.com/pRINTERnOODLE/Auto-Z-calibration-for-RRF-3.3-or-later-and-Klicky-Probe
 
 Thanks for sharing your configuration! 
+
+Also thanks to the people behind the Klipper AutoZ plugin:
+ - https://github.com/protoloft/klipper_z_calibration
+ 
+And to the Klicky probe designers
+ - https://github.com/jlas1/Klicky-Probe
+
+
