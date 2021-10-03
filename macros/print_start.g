@@ -34,6 +34,19 @@ echo "Bed Temp reached"
 ;M98 P"/macros/magprobe_do_QGL.g"
 ;M98 P"/macros/setZ0.g"				; testing Z0 with MagProbe
 ;M98 P"/macros/goto_bucket.g"
+; sets and waits hotend temp to slicer value
+; ------------------------------------------
+echo "Setting HotEnd Temperature : 170C"
+M104 S{global.hotend_temp}
+echo "Waiting for HotEnd heating"
+M109 S170
+echo "HotEnd Temp reached"
+
+G28
+
+M98 P"/macros/magprobe_do_QGL.g"
+
+M98 P"/macros/autoz/autoz.g"
 
 ; sets and waits hotend temp to slicer value
 ; ------------------------------------------
@@ -43,20 +56,21 @@ echo "Waiting for HotEnd heating"
 M109 S{global.hotend_temp}
 echo "HotEnd Temp reached"
 
+G28
+
 ; retracts to avoid oozing and false the Z0 read
 G91
 G1 E-6	
 G90
 
 ; QGL and final Z0
-M98 P"/macros/magprobe_do_QGL.g"
 ;M98 P"/macros/setZ0.g"				; testing Z0 with MagProbe
-M98 P"/macros/goto_bucket.g"
+;M98 P"/macros/goto_bucket.g"
 
 ; cleans nozzle and Sets final Z0
 ; ------------------------------------------
-echo "Cleaning Nozzle"
-M98 P"/macros/do_nozzle_wipe.g"		; goes to wipe place and wipes nozzle
+;echo "Cleaning Nozzle"
+;M98 P"/macros/do_nozzle_wipe.g"		; goes to wipe place and wipes nozzle
 ;M98 P"/macros/setZ0.g"				; testing Z0 with MagProbe
 
 ; MESH COMPENSATION
@@ -64,8 +78,8 @@ M98 P"/macros/do_nozzle_wipe.g"		; goes to wipe place and wipes nozzle
 ;echo "Sampling Mesh"
 ;M98 P"/macros/magprobe_do_mesh.g"
 
-echo "Loading and Enabling Mesh compensation"
-G29 S1		; loads heatmap.csv
+;echo "Loading and Enabling Mesh compensation"
+;G29 S1		; loads heatmap.csv
 
 
 ; Baby stepping for PLA temperatures

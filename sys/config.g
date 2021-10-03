@@ -219,6 +219,12 @@ M563 P0 D0 H1                                    ; define tool 0
 G10 P0 X0 Y0 Z0                                  ; set tool 0 axis offsets
 G10 P0 R0 S0                                     ; set initial tool 0 active and standby temperatures to 0C
 
+; Input shaper
+M593 F49
+
+; Pressure advance
+M572 D0 S0.04
+
 ; Custom settings are not defined
 
 ; defines global variables
