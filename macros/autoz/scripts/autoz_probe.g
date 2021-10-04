@@ -7,6 +7,7 @@ var retries = 5
 var maxstddev = 0.003
 var probe = 1
 var probe_height = 5
+var ignore_first = false
 
 ; Check macro parameter for probe number
 if exists(param.K)
@@ -32,11 +33,36 @@ if exists(param.H)
   set var.probe_height = {param.H}
 ;end if
 
+; check macro parameter for flag to ignore first sample. Default 0 (false)
+if exists(param.I)
+  echo "Ignore first sample: ", {param.I}
+  if {param.I} == 0
+    set var.ignore_first = false
+  elif {param.I} == 1
+    set var.ignore_first = true
+  else
+    echo "Warning: Invalid parameter I (ignore first samle): " {param.I}
+  ;end if
+
 while true
   echo "Iterations: ", iterations
   if iterations == {var.retries}
     abort "Too many measuring attempts"
   ;end if
+
+  if iterations == 0 && var.ignore_first == true
+    M400
+    G30 K{var.probe} S-01
+    M400
+  
+    G91
+    G1 Z{var.probe_height} F99999
+    G90
+    M400
+
+    echo "Ignoring first sample"
+  ;end if
+  
 
   M400
   G30 K{var.probe} S-01

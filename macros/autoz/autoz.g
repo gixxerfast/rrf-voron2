@@ -26,7 +26,7 @@ M98 P"/macros/autoz/scripts/autoz_goto_zpin.g" ; go to the z pin
 M400
 M98 P"/macros/autoz/scripts/autoz_adjust_safe_zdrive.g" ; set z drive safe physics
 M400
-M98 P"/macros/autoz/scripts/autoz_probe.g" K1 H5 A4 S0.003
+M98 P"/macros/autoz/scripts/autoz_probe.g" K1 H5 A4 S0.003 I1
 M400
 
 if !exists(global.macro_call_result)
@@ -59,7 +59,7 @@ M400
 ; Probe magprobe body on the Z-pin
 ;##################################################################
 
-M98 P"/macros/autoz/scripts/autoz_probe.g" K1 H5 A4 S0.003
+M98 P"/macros/autoz/scripts/autoz_probe.g" K1 H5 A4 S0.003 I1
 M400
 
 if !exists(global.macro_call_result)
@@ -79,7 +79,7 @@ M400
 M98 P"/macros/autoz/scripts/autoz_goto_bedcenter.g" ; go to the center of the bed 
 M400
 
-M98 P"/macros/autoz/scripts/autoz_probe.g" K0 H5 A4 S0.003
+M98 P"/macros/autoz/scripts/autoz_probe.g" K0 H5 A4 S0.003 I1
 M400
 
 if !exists(global.macro_call_result)
