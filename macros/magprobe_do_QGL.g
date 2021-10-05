@@ -37,7 +37,7 @@ while move.calibration.initial.deviation > 0.0015
 echo "Leveling complete"
 
 ; setting Z0 based on MagProbe - experimental
-M98 P"/macros/magprobe_setZ0.g"
+;M98 P"/macros/magprobe_setZ0.g"
 
 M558 K0 H5 F600 
 M98 P"/macros/magprobe_dock.g"

@@ -1,6 +1,6 @@
 ; raise Z 5mm before moving if needed
 
-M98 P"/macros/magprobe_dock.g"
+;M98 P"/macros/magprobe_dock.g"
 
 echo "Moving at bed center"
 G90

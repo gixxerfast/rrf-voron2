@@ -20,7 +20,7 @@ M140 S0
 M290 S0.00 R0
 
 M98 P"/macros/magprobe_dock.g"
-M98 P"/macros/goto_bucket.g"
+;M98 P"/macros/goto_bucket.g"
 
 ; sets and waits bed temp to slicer value, then runs QGL (cold noozle)
 ; ------------------------------------------
@@ -43,9 +43,7 @@ M109 S170
 echo "HotEnd Temp reached"
 
 G28
-
-M98 P"/macros/magprobe_do_QGL.g"
-
+G32
 M98 P"/macros/autoz/autoz.g"
 
 ; sets and waits hotend temp to slicer value
@@ -56,12 +54,12 @@ echo "Waiting for HotEnd heating"
 M109 S{global.hotend_temp}
 echo "HotEnd Temp reached"
 
-G28
-
 ; retracts to avoid oozing and false the Z0 read
 G91
 G1 E-6	
 G90
+
+G28 Z
 
 ; QGL and final Z0
 ;M98 P"/macros/setZ0.g"				; testing Z0 with MagProbe

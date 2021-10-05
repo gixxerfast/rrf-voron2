@@ -7,9 +7,7 @@ G29 S2
 ; move to the center of the mesh with the PROBE (mind affset in Y is 25 above noozle)
 G90
 G1 Z15
-G1 X150 Y130
-
-M558 K0 H2 F180
+M98 P"/macros/goto_bed_center.g"
 
 echo "Testing mag probe offset"
 G1 Z10 F3000

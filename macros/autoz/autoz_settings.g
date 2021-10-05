@@ -5,7 +5,7 @@
 
 ; THIS IS THE DISTANCE FROM THE BODY OF THE CLICKY PROBE TO IT'S OWN TRIGGER POINT 
 if !exists(global.switch_offset)
- global switch_offset = 0.400000 ; larger values here means nozzle closer to the bed after autoz
+ global switch_offset = 0.450000 ; larger values here means nozzle closer to the bed after autoz
 
 
 ; THIS IS THE ABSOLUTE X LOCATION OF THE CLICKY WHILE DOCKED
