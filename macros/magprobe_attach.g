@@ -18,11 +18,11 @@ if global.magprobe_status != "attached"
 	G1 Y250 F12000
 	; check for probe trigger here
 	M98 P"/macros/magprobe_get_status.g"
-	;echo global.magprobe_status
-
-if global.magprobe_status = "attached"
+	
+elif global.magprobe_status == "attached"
 	echo "Probe is attached to the tool"
+	
 else
 	echo "Error probe not attached - aborting"
 	abort
-; finish
+;end if

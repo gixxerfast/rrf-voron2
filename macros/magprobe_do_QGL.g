@@ -8,13 +8,14 @@ echo "Bed transformation cleared"
 if !move.axes[0].homed || !move.axes[1].homed
     echo "Printer was not homed."
     abort
+;end if
 
 M98 P"/macros/magprobe_attach.g"
 
 ; Lower currents, speed & accel
-M98 P"/macros/speed_probing.g"
-M98 P"/macros/z_current_low.g"		; reduce current to limit potential damages
-;M98 P"/macros/xy_current_low.g"	; reduce current to limit potential damages
+M98 P"/macros/set_safe_speed.g"
+M98 P"/macros/set_safe_current_z.g"		; reduce current to limit potential damages
+;M98 P"/macros/set_safe_current_xy.g"	; reduce current to limit potential damages
 
 ; Probe the bed at 4 points
 echo "Doing 1st pass. Old deviation was: " ^ move.calibration.initial.deviation
@@ -41,5 +42,6 @@ echo "Leveling complete"
 
 M558 K0 H5 F600 
 M98 P"/macros/magprobe_dock.g"
-M98 P"/macros/z_current_high.g"
-M98 P"/macros/speed_printing.g"
+M98 P"/macros/restore_current_z.g"
+M98 P"/macros/restore_current_xy.g"
+M98 P"/macros/set_normal_speed.g"

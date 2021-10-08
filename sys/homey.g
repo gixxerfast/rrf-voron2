@@ -1,11 +1,8 @@
 ; homey.g
 ; called to home the Y axis
 
-; Setup low speed & accel
-M98 P"/macros/speed_probing.g"
-
-; Lower AB currents
-M98 P"/macros/xy_current_low.g"
+M98 P"/macros/set_safe_speed.g"       ; Setup low speed & accel
+M98 P"/macros/set_safe_current_xy.g"  ; Lower AB currents
 
 if !move.axes[0].homed
 	; raise Z a bit
@@ -27,8 +24,5 @@ G90
 ; Move slowly to Y axis endstop once more (second pass)
 G1 Y340 F360 H1
 
-; Restore AB currents
-M98 P"/macros/xy_current_high.g"
-
-; Restore normal speed & accel
-M98 P"/macros/speed_printing.g"
+M98 P"/macros/restore_current_xy.g"      ; Restore AB currents
+M98 P"/macros/set_normal_speed.g"     ; Restore normal speed & accel

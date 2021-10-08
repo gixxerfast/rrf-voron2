@@ -76,29 +76,27 @@ M586 P2 S0                                       ; disable Telnet
 
 M569 P121.0 S1 D2                                ; E - physical drive 121.0 goes forwards
 
-M569 P0.0 S1                                     ; A -> Y - physical drive 0.0 goes forwards
-M569 P0.1 S1                                     ; B -> X - physical drive 0.1 goes forwards
+M569 P0.0 S1 D2                                  ; A -> Y - physical drive 0.0 goes forwards
+M569 P0.1 S1 D2                                  ; B -> X - physical drive 0.1 goes forwards
 
-M569 P0.3 S1                                     ; Z0 - physical drive 0.3 goes forwards
-M569 P0.4 S0                                     ; Z1 - physical drive 0.4 goes backwards
-M569 P0.5 S1                                     ; Z2 - physical drive 0.5 goes forwards
-M569 P0.6 S0                                     ; Z3 - physical drive 0.6 goes backwards
+M569 P0.3 S1 D2                                  ; Z0 - physical drive 0.3 goes forwards
+M569 P0.4 S0 D2                                  ; Z1 - physical drive 0.4 goes backwards
+M569 P0.5 S1 D2                                  ; Z2 - physical drive 0.5 goes forwards
+M569 P0.6 S0 D2                                  ; Z3 - physical drive 0.6 goes backwards
 
 
 M584 X0.0 Y0.1 Z0.3:0.4:0.5:0.6 E121.0           ; set drive mapping
 M350 X16 Y16 Z16 E16 I1                          ; configure microstepping with interpolation
 M92 X160.00 Y160.00 Z400.00 E400.00              ; set steps per mm
-M566 X900.00 Y900.00 Z60.00 E120.00              ; set maximum instantaneous speed changes (mm/min)
-M203 X6000.00 Y6000.00 Z180.00 E1200.00          ; set maximum speeds (mm/min)
-M201 X500.00 Y500.00 Z20.00 E250.00              ; set accelerations (mm/s^2)
+
+; Accelerations and speed are set in separate macro
+M98 P"/macros/set_normal_speed.g"
 
 ; Stepper driver currents
 ; set motor currents (mA) and motor idle factor in per cent
-M906 X800 Y800 I30
-M906 Z800 I90
-M906 E500 I50                     
-
-M84 S120                                         ; Set idle timeout
+; Drive currents
+M906 X1200 Y1200 Z1200 E500 I70 ; XYZ and E current
+M84 S120                        ; Idle timeout
 
 ; ==================================
 ; Endstops						
@@ -127,9 +125,6 @@ M671 X-65:-65:365:365 Y0:395:395:0 S20      ; Define Z belts locations (Front_Le
 											; Snn Maximum correction to apply to each leadscrew in mm (optional, default 1.0)
 											; S20 - 20 mm spacing
 M557 X30:270 Y30:270 S40					; Define bed mesh grid (inductive probe, positions include the Y offset!)
-
-; Accelerations and speed are set in a file
-M98 P"/macros/speed_printing.g"
 
 ; ==================================
 ; Bed heater

@@ -5,6 +5,6 @@ M98 P"/macros/magprobe_do_QGL.g"
 G28
 
 ; Restore high currents, speed & accel
-M98 P"/macros/speed_printing.g"
-M98 P"/macros/xy_current_high.g"
-M98 P"/macros/z_current_high.g"
+M98 P"/macros/set_normal_speed.g"
+M98 P"/macros/restore_current_xy.g"
+M98 P"/macros/restore_current_z.g"
