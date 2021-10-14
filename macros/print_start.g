@@ -1,14 +1,26 @@
 ; Macro print start
-
+; M98 P"/macros/print_start.g" S[first_layer_bed_temperature] T{first_layer_temperature[initial_extruder]}
 ; Gets the active temperatures set by the slicer (1st layer)
 ; ------------------------------------------
 ;	global.bed_temp			is the set active bed temp
 ;	global.hotend_temp		is the set active hotend temp
+
+; Check macro parameter for first layer bed temp
+if exists(param.S)
+  echo "First layer bed temp: ", {param.S}, " 'C"
+;end if
+
+; Check macro parameter for first layer hotend temp
+if exists(param.T)
+  echo "First layer bed hotend temp: ", {param.T}, " 'C"
+;end if
+
 M98 P"/macros/get_active_temps.g"
+
 
 ; turns on led in print start mode
 ; ------------------------------------------
-M98 P"/macros/led_status_print_start.g"
+M98 P"/macros/led/led_status_print_start.g"
 
 ; reset baby stepping
 M290 S0.00 R0
@@ -44,10 +56,10 @@ G91
 G1 E-6	
 G90
 
-G28 Z
-
 ;echo "Loading and Enabling Mesh compensation"
-;G29 S1		; loads heatmap.csv
+G29 S1		; loads heatmap.csv
+
+G28 Z
 
 ; extrudes a bit back
 G91

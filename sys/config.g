@@ -52,7 +52,7 @@ M550 P"voron2"          ; set printer name
 M552 S1                                          ; enable network
 M586 P0 S1                                       ; enable HTTP (for DWC)
 M586 P1 S1                                       ; enable FTP (for remote backups)
-M586 P2 S0                                       ; disable Telnet
+M586 P2 S1 T1                                      ; disable Telnet
 
 ; ================================== 
 ; DRIVERS
@@ -74,20 +74,19 @@ M586 P2 S0                                       ; disable Telnet
 ; Pnnn 		Motor driver number
 ; Snnn		Direction of movement 0 = backwards, 1 = forwards (default 1)
 
-M569 P121.0 S1 D2                                ; E - physical drive 121.0 goes forwards
+M569 P121.0 S1                                   ; E - physical drive 121.0 goes forwards
 
-M569 P0.0 S1 D2                                  ; A -> Y - physical drive 0.0 goes forwards
-M569 P0.1 S1 D2                                  ; B -> X - physical drive 0.1 goes forwards
+M569 P0.0 S0                                     ; A -> Y - physical drive 0.0 goes backwards
+M569 P0.1 S0                                     ; B -> X - physical drive 0.1 goes backwards
 
-M569 P0.3 S1 D2                                  ; Z0 - physical drive 0.3 goes forwards
-M569 P0.4 S0 D2                                  ; Z1 - physical drive 0.4 goes backwards
-M569 P0.5 S1 D2                                  ; Z2 - physical drive 0.5 goes forwards
-M569 P0.6 S0 D2                                  ; Z3 - physical drive 0.6 goes backwards
-
+M569 P0.3 S1                                     ; Z0 - physical drive 0.3 goes forwards
+M569 P0.4 S0                                     ; Z1 - physical drive 0.4 goes backwards
+M569 P0.5 S1                                     ; Z2 - physical drive 0.5 goes forwards
+M569 P0.6 S0                                     ; Z3 - physical drive 0.6 goes backwards
 
 M584 X0.0 Y0.1 Z0.3:0.4:0.5:0.6 E121.0           ; set drive mapping
 M350 X16 Y16 Z16 E16 I1                          ; configure microstepping with interpolation
-M92 X160.00 Y160.00 Z400.00 E400.00              ; set steps per mm
+M92 X80.00 Y80.00 Z400.00 E400.00                ; set steps per mm
 
 ; Accelerations and speed are set in separate macro
 M98 P"/macros/set_normal_speed.g"
@@ -95,7 +94,7 @@ M98 P"/macros/set_normal_speed.g"
 ; Stepper driver currents
 ; set motor currents (mA) and motor idle factor in per cent
 ; Drive currents
-M906 X1200 Y1200 Z1200 E500 I70 ; XYZ and E current
+M906 X1200 Y1200 Z1200 E400 I70 ; XYZ and E current
 M84 S120                        ; Idle timeout
 
 ; ==================================
@@ -131,17 +130,17 @@ M557 X30:270 Y30:270 S40					; Define bed mesh grid (inductive probe, positions 
 ; ==================================
 M308 S0 P"temp0" Y"thermistor" T100000 B3950     ; configure sensor 0 as thermistor on pin temp0
 M950 H0 C"out0" Q10 T0                               ; create bed heater output on out0 and map it to sensor 0
-M307 H0 B0 R0.607 C340.7 D1.16 S1.00 V24.1
-;M307 H0 B1 S1.00                                 ; Enable bang-bang mode for the bed heater and set PWM limit
+M307 H0 B0 R0.637 C222.4 D0.95 S1.00 V24.0
+;M307 H0 B1 S1.00                                ; Enable bang-bang mode for the bed heater and set PWM limit
 M140 H0                                          ; map heated bed to heater 0
 M143 H0 S120                                     ; set temperature limit for heater 0 to 120C
 
 ; ==================================
 ; Hotend heater 
 ; ==================================
-M308 S1 P"121.temp0" Y"thermistor" T100000 B3950 ; configure sensor 1 as thermistor on pin 121.temp0
+M308 S1 P"121.temp0" Y"thermistor" T100000 B4267 ; configure sensor 1 as thermistor on pin 121.temp0
 M950 H1 C"121.out0" T1                           ; create nozzle heater output on 121.out0 and map it to sensor 1
-M307 H1 B0 R3.391 C160.1:134.1 D4.20 S1.00 V23.8
+M307 H1 B0 R3.409 C154.0 D3.92 S1.00 V23.8
 ;M307 H1 B0 S1.00                                 ; disable bang-bang mode for heater  and set PWM limit
 M143 H1 S280                                     ; set temperature limit for heater 1 to 280C
 
@@ -201,13 +200,14 @@ M106 P0 S0 H-1                                   ; set fan 0 value. Thermostatic
 M950 F1 C"121.out2"                              ; create fan 1 on pin 121.out2 and set its frequency
 M106 P1 S1 H1 T45                                ; set fan 1 value. Thermostatic control is turned on
 
-; Controller fan 1
-M950 F2 C"out6"                                  ; create fan 2 on pin out5 and set its frequency
-M106 P2 S1.0 H3:4 T30 C"Controller fan 1"             ; controlled by Sensor 3 - MCU
 
+M950 F2 C"!0.out3+0.out3.tach" Q25000                     ; create fan 2 on pin out3 and set its frequency
+M106 P2 H3:4 L0.2 X1.0 T30:50 C"Controller fan 1"  ; controlled by Sensor 3 - MCU
+;M106 P2 H-1 C"Controller fan 1" 
 ; Controller fan 2
-M950 F3 C"out5"                                  ; create fan 3 on pin out6 and set its frequency
-M106 P3 S1 H0 T45                                ; set fan 3 value. Thermostatic control is turned on
+M950 F3 C"!0.out4+0.out4.tach" Q25000                     ; create fan 3 on pin out4 and set its frequency
+M106 P3 H0 L0.2 X1.0 T60:120 C"Controller fan 2"
+;M106 P3 H-1 C"Controller fan 2"
 
 ; Tools
 M563 P0 D0 H1                                    ; define tool 0
@@ -215,7 +215,8 @@ G10 P0 X0 Y0 Z0                                  ; set tool 0 axis offsets
 G10 P0 R0 S0                                     ; set initial tool 0 active and standby temperatures to 0C
 
 ; Input shaper
-M593 F49
+;M593 F49
+M593 P"zvd" F56.7
 
 ; Pressure advance
 M572 D0 S0.04
