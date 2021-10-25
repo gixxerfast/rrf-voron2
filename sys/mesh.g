@@ -14,7 +14,7 @@ M98 P"/macros/magprobe_attach.g"
 M98 P"/macros/magprobe_set_z_offset.g"
 
 echo "Starting MESH sampling"
-G29 S0			; run mesh samplig procedure
+G29 S0; R24			; run mesh sampling procedure
 echo "MESH samplig sequence completed"
 
 M98 P"/macros/set_normal_speed.g"

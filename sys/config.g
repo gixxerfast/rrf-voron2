@@ -76,8 +76,8 @@ M586 P2 S1 T1                                      ; disable Telnet
 
 M569 P121.0 S1                                   ; E - physical drive 121.0 goes forwards
 
-M569 P0.0 S0                                     ; A -> Y - physical drive 0.0 goes backwards
-M569 P0.1 S0                                     ; B -> X - physical drive 0.1 goes backwards
+M569 P0.0 S1 D2                                  ; A -> Y - physical drive 0.0 goes forwards
+M569 P0.1 S1 D2                                  ; B -> X - physical drive 0.1 goes forwards
 
 M569 P0.3 S1                                     ; Z0 - physical drive 0.3 goes forwards
 M569 P0.4 S0                                     ; Z1 - physical drive 0.4 goes backwards
@@ -94,7 +94,7 @@ M98 P"/macros/set_normal_speed.g"
 ; Stepper driver currents
 ; set motor currents (mA) and motor idle factor in per cent
 ; Drive currents
-M906 X1200 Y1200 Z1200 E400 I70 ; XYZ and E current
+M906 X1600 Y1600 Z1200 E500 I70 ; XYZ and E current
 M84 S120                        ; Idle timeout
 
 ; ==================================
@@ -122,8 +122,8 @@ M208 X0:300 Y0:305 Z-5:265                       ; Set axis minima - negative X 
 M671 X-65:-65:365:365 Y0:395:395:0 S20      ; Define Z belts locations (Front_Left, Back_Left, Back_Right, Front_Right)
 											; Position of the bed leadscrews.. 4 Coordinates
 											; Snn Maximum correction to apply to each leadscrew in mm (optional, default 1.0)
-											; S20 - 20 mm spacing
-M557 X30:270 Y30:270 S40					; Define bed mesh grid (inductive probe, positions include the Y offset!)
+                                            ; S20 - 20 mm spacing
+M557 X30:270 Y30:270 P7                     ; Define bed mesh grid (inductive probe, positions include the Y offset!)
 
 ; ==================================
 ; Bed heater
@@ -138,9 +138,11 @@ M143 H0 S120                                     ; set temperature limit for hea
 ; ==================================
 ; Hotend heater 
 ; ==================================
-M308 S1 P"121.temp0" Y"thermistor" T100000 B4267 ; configure sensor 1 as thermistor on pin 121.temp0
+;M308 S1 P"121.temp0" Y"thermistor" T100000 B4267 ; configure sensor 1 as thermistor on pin 121.temp0
+M308 S1 P"121.temp0" Y"pt1000"                   ; configure sensor 1 as pt1000 on pin 121.temp0
 M950 H1 C"121.out0" T1                           ; create nozzle heater output on 121.out0 and map it to sensor 1
-M307 H1 B0 R3.409 C154.0 D3.92 S1.00 V23.8
+M307 H1 B0 R2.518 C174.0 D6.14 S1.00 V23.8
+;M307 H1 B0 R3.409 C154.0 D3.92 S1.00 V23.8
 ;M307 H1 B0 S1.00                                 ; disable bang-bang mode for heater  and set PWM limit
 M143 H1 S280                                     ; set temperature limit for heater 1 to 280C
 
@@ -183,7 +185,7 @@ M308 S10 A"Chamber" P"0.temp2" Y"thermistor" T100000 B3950
 ; -----------
 ; This is the mag probe with microswitch in Afterburner
 M558 K0 P8 C"^121.io2.in" T18000 F180 H10 A10 S0.0025
-G31 K0 P500 X0 Y20 Z7.612
+G31 K0 P500 X0 Y20 Z9 ;Z7.438
 
 ; Z-SWITCH
 ; -----------
@@ -201,12 +203,12 @@ M950 F1 C"121.out2"                              ; create fan 1 on pin 121.out2 
 M106 P1 S1 H1 T45                                ; set fan 1 value. Thermostatic control is turned on
 
 
-M950 F2 C"!0.out3+0.out3.tach" Q25000                     ; create fan 2 on pin out3 and set its frequency
+M950 F2 C"!0.out4+0.out4.tach" Q25000              ; create fan 2 on pin out4 and set its frequency
 M106 P2 H3:4 L0.2 X1.0 T30:50 C"Controller fan 1"  ; controlled by Sensor 3 - MCU
 ;M106 P2 H-1 C"Controller fan 1" 
 ; Controller fan 2
-M950 F3 C"!0.out4+0.out4.tach" Q25000                     ; create fan 3 on pin out4 and set its frequency
-M106 P3 H0 L0.2 X1.0 T60:120 C"Controller fan 2"
+M950 F3 C"!0.out3+0.out3.tach" Q25000              ; create fan 3 on pin out3 and set its frequency
+M106 P3 H0 L0.2 X0.7 T60:120 C"Controller fan 2"
 ;M106 P3 H-1 C"Controller fan 2"
 
 ; Tools
@@ -214,9 +216,11 @@ M563 P0 D0 H1                                    ; define tool 0
 G10 P0 X0 Y0 Z0                                  ; set tool 0 axis offsets
 G10 P0 R0 S0                                     ; set initial tool 0 active and standby temperatures to 0C
 
+M955 P121.0 I05
+
 ; Input shaper
 ;M593 F49
-M593 P"zvd" F56.7
+M593 P"zvd" F48 S0.12
 
 ; Pressure advance
 M572 D0 S0.04

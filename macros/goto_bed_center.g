@@ -4,6 +4,9 @@
 
 echo "Moving at bed center"
 G90
+
 if move.axes[2].userPosition < 5
-	G1 Z5 F9000
+  G1 Z5 F9000
+;end if
+
 G1 X150 Y150 F6000
