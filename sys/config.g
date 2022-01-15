@@ -52,7 +52,7 @@ M550 P"voron2"          ; set printer name
 M552 S1                                          ; enable network
 M586 P0 S1                                       ; enable HTTP (for DWC)
 M586 P1 S1                                       ; enable FTP (for remote backups)
-M586 P2 S1 T1                                      ; disable Telnet
+M586 P2 S1                                       ; disable Telnet
 
 ; ================================== 
 ; DRIVERS
@@ -109,8 +109,8 @@ M84 S120                        ; Idle timeout
 ; P"pin_name"
 
 ; Endstops
-M574 X2 S1 P"^121.io0.in"                       ; configure active-high endstop for high end on X via pin ^121.io0.in
-M574 Y2 S1 P"^0.io1.in"                         ; configure active-high endstop for high end on Y via pin ^io1.in
+M574 X2 S1 P"121.io0.in"                       ; configure active-high endstop for high end on X via pin 121.io0.in
+M574 Y2 S1 P"0.io1.in"                         ; configure active-high endstop for high end on Y via pin io1.in
 M574 Z0 p"nil"                                  ; No Z endstop
                                                 ; Extruder never stops :-)
 
@@ -128,12 +128,18 @@ M557 X30:270 Y30:270 P7                     ; Define bed mesh grid (inductive pr
 ; ==================================
 ; Bed heater
 ; ==================================
-M308 S0 P"temp0" Y"thermistor" T100000 B3950     ; configure sensor 0 as thermistor on pin temp0
+M308 S0 A"Bed Heater" P"temp0" Y"thermistor" T100000 B3950     ; configure sensor 0 as thermistor on pin temp0
+;M308 S0 P"temp1" Y"thermistor" T100000 B3950     ; configure sensor 0 as thermistor on pin temp1
 M950 H0 C"out0" Q10 T0                               ; create bed heater output on out0 and map it to sensor 0
-M307 H0 B0 R0.637 C222.4 D0.95 S1.00 V24.0
+M307 H0 R0.620 K0.495:0.000 D0.91 E1.35 S1.00 B0
+;M307 H0 B0 R0.637 C222.4 D0.95 S1.00 V24.0
+;M307 H0 B0 R0.602 C315.3 D0.89 S1.00 V24.0
 ;M307 H0 B1 S1.00                                ; Enable bang-bang mode for the bed heater and set PWM limit
 M140 H0                                          ; map heated bed to heater 0
 M143 H0 S120                                     ; set temperature limit for heater 0 to 120C
+
+M308 S2 A"Extra Bed Temp" P"temp1" Y"thermistor" T100000 B3950     ; configure sensor 2 as thermistor on pin temp0
+M143 H2 S130
 
 ; ==================================
 ; Hotend heater 
@@ -141,7 +147,11 @@ M143 H0 S120                                     ; set temperature limit for hea
 ;M308 S1 P"121.temp0" Y"thermistor" T100000 B4267 ; configure sensor 1 as thermistor on pin 121.temp0
 M308 S1 P"121.temp0" Y"pt1000"                   ; configure sensor 1 as pt1000 on pin 121.temp0
 M950 H1 C"121.out0" T1                           ; create nozzle heater output on 121.out0 and map it to sensor 1
-M307 H1 B0 R2.518 C174.0 D6.14 S1.00 V23.8
+M307 H1 B0 R2.638 C196.3 D6.34 S1.00 V24.2       ; NF Coated Copper nozzle 0.4
+;M307 H1 B0 R2.406 C188.5 D6.38 S1.00 V24.2       ; HF CHT Nozzle 0.6
+;M307 H1 R2.796 K0.530:0.000 D6.11 E1.35 S1.00 B0 V23.9
+;M307 H1 R2.897 K0.551:0.000 D6.38 E1.35 S1.00 B0 V23.9
+;M307 H1 B0 R2.518 C174.0 D6.14 S1.00 V23.8
 ;M307 H1 B0 R3.409 C154.0 D3.92 S1.00 V23.8
 ;M307 H1 B0 S1.00                                 ; disable bang-bang mode for heater  and set PWM limit
 M143 H1 S280                                     ; set temperature limit for heater 1 to 280C
@@ -184,32 +194,47 @@ M308 S10 A"Chamber" P"0.temp2" Y"thermistor" T100000 B3950
 ; MAG PROBE (GND, IO)
 ; -----------
 ; This is the mag probe with microswitch in Afterburner
-M558 K0 P8 C"^121.io2.in" T18000 F180 H10 A10 S0.0025
+M558 K0 P8 C"121.io2.in" T18000 F180 H10 A10 S0.0025
 G31 K0 P500 X0 Y20 Z9 ;Z7.438
 
 ; Z-SWITCH
 ; -----------
 ; This is the microswitch which is pressed by the Noozle
-M558 K1 P8 C"^io5.in" T18000 F180 H3 A10 S0.0025 R0
+M558 K1 P8 C"io5.in" T18000 F180 H3 A10 S0.0025 R0
 ; Omron micro switch
 G31 K1 P500 X0 Y0 Z1.20
 
+; ==================================
 ; Part cooling fan
+; ==================================
 M950 F0 C"121.out1"                              ; create fan 0 on pin 121.out1 and set its frequency
 M106 P0 S0 H-1                                   ; set fan 0 value. Thermostatic control is turned off
 
+; ==================================
 ; Hotend fan
+; ==================================
 M950 F1 C"121.out2"                              ; create fan 1 on pin 121.out2 and set its frequency
 M106 P1 S1 H1 T45                                ; set fan 1 value. Thermostatic control is turned on
 
-
+; ==================================
+; MCU fan
+; ==================================
 M950 F2 C"!0.out4+0.out4.tach" Q25000              ; create fan 2 on pin out4 and set its frequency
 M106 P2 H3:4 L0.2 X1.0 T30:50 C"Controller fan 1"  ; controlled by Sensor 3 - MCU
 ;M106 P2 H-1 C"Controller fan 1" 
-; Controller fan 2
+
+; ==================================
+; Controller bay fan
+; ==================================
 M950 F3 C"!0.out3+0.out3.tach" Q25000              ; create fan 3 on pin out3 and set its frequency
 M106 P3 H0 L0.2 X0.7 T60:120 C"Controller fan 2"
 ;M106 P3 H-1 C"Controller fan 2"
+
+; ==================================
+; Nevermore Filter fans
+; ==================================
+M950 F4 C"0.out5"                                ; create fan 4 on pin 0.out5 and set its frequency
+M106 P4 H0 S0.65 T65 C"Nevermore fan"            ; set fan 4 value. Thermostatic control is turned on
 
 ; Tools
 M563 P0 D0 H1                                    ; define tool 0
@@ -219,11 +244,12 @@ G10 P0 R0 S0                                     ; set initial tool 0 active and
 M955 P121.0 I05
 
 ; Input shaper
-;M593 F49
-M593 P"zvd" F48 S0.12
+;M593 P"mzv" F47
+;M593 P"zvdd" F70 S0.1
+M593 P"mzv" F44
 
 ; Pressure advance
-M572 D0 S0.04
+M572 D0 S0.035
 
 ; Custom settings are not defined
 
@@ -232,3 +258,5 @@ M98 P"/macros/define_global_vars.g"
 
 ; Load override parameters
 M501
+
+T0
