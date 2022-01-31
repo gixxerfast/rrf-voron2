@@ -48,7 +48,7 @@ M400
 
 M98 P"/macros/autoz/scripts/autoz_move_up.g"
 M400
-M98 P"/macros/magprobe_attach.g"                               ; pick up and verify clicky
+M401                                                           ; pick up and verify probe
 M400
 M98 P"/macros/autoz/scripts/autoz_goto_zpin_magprobe_offset.g" ; move the clicky probe switch body over the z pin
 M400
@@ -112,9 +112,9 @@ M400
 ;##############################################
 
 M98 P"/macros/autoz/scripts/autoz_restore_zdrive.g" ; restore the z drive to the state before autoz
-M98 P"/macros/autoz/scripts/autoz_move_up.g" ; small z hop
+M98 P"/macros/autoz/scripts/autoz_move_up.g"        ; small z hop
 M400
-M98 P"/macros/magprobe_dock.g" ; unload the clicky probe
+M402                                                ; unload the probe
 M98 P"/macros/autoz/scripts/autoz_goto_bedcenter.g" ; go to the center of the bed 
 
 ;##############################################

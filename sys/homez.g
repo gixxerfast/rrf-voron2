@@ -8,7 +8,7 @@ if !move.axes[0].homed || !move.axes[1].homed
 ;end if
 
 
-M98 P"/macros/magprobe_dock.g"
+;M98 P"/macros/magprobe_dock.g"
 M98 P"/macros/set_safe_speed.g"     	; Setup low speed & accel
 
 ;echo "homing Z"

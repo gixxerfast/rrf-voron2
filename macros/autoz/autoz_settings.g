@@ -3,7 +3,7 @@
 ; 
 ; ---------- Coordinates ----------
 
-; THIS IS THE DISTANCE FROM THE BODY OF THE CLICKY PROBE TO IT'S OWN TRIGGER POINT 
+; THIS IS THE DISTANCE FROM THE BODY OF THE MICROSWITCH TO IT'S OWN TRIGGER POINT 
 if !exists(global.switch_offset)
   global switch_offset = 0.420000 ; larger values here means nozzle closer to the bed after autoz
 else
@@ -11,19 +11,19 @@ else
 ;end if
 
 
-; THIS IS THE ABSOLUTE X LOCATION OF THE CLICKY WHILE DOCKED
-if !exists(global.clickydockx)
- global clickydockx = 44
+; THIS IS THE ABSOLUTE X LOCATION OF THE PROBE WHILE DOCKED
+;if !exists(global.clickydockx)
+; global clickydockx = 44
 
 
 ; THIS IS THE ABSOLUTE Y LOCATION OF THE CLICKY WHILE DOCKED
-if !exists(global.clickydocky)
- global clickydocky = 305
+;if !exists(global.clickydocky)
+; global clickydocky = 305
 
 
 ; THIS IS THE RELATIVE DISTANCE AND DIRECTION OF THE CLICKY DOCKING MOVE
-if !exists(global.clickywipe)
- global clickywipe = 30 ; -30 for a left wipe 30 for a right wipe
+;if !exists(global.clickywipe)
+; global clickywipe = 30 ; -30 for a left wipe 30 for a right wipe
 
 
 ; THIS IS THE ABSOLUTE X LOCATION OF THE MECHANICAL Z PIN 

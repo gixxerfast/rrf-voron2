@@ -115,7 +115,7 @@ M574 Z0 p"nil"                                  ; No Z endstop
                                                 ; Extruder never stops :-)
 
 ; Axis travel limits                            ; Mind this is travel NOT print area
-M208 X0:300 Y0:305 Z-5:265                       ; Set axis minima - negative X is to have 0,0 on bed corner
+M208 X-4:300 Y0:305 Z-5:265                       ; Set axis minima - negative X is to have 0,0 on bed corner
                                                 ; WARNING on Z not to hit the roof - this is set here
 
 ; Belt Locations
@@ -147,7 +147,8 @@ M143 H2 S130
 ;M308 S1 P"121.temp0" Y"thermistor" T100000 B4267 ; configure sensor 1 as thermistor on pin 121.temp0
 M308 S1 P"121.temp0" Y"pt1000"                   ; configure sensor 1 as pt1000 on pin 121.temp0
 M950 H1 C"121.out0" T1                           ; create nozzle heater output on 121.out0 and map it to sensor 1
-M307 H1 B0 R2.638 C196.3 D6.34 S1.00 V24.2       ; NF Coated Copper nozzle 0.4
+M307 H1 R2.605 K0.363:0.000 D7.04 E1.35 S1.00 B0 V24.2
+;M307 H1 B0 R2.638 C196.3 D6.34 S1.00 V24.2       ; NF Coated Copper nozzle 0.4
 ;M307 H1 B0 R2.406 C188.5 D6.38 S1.00 V24.2       ; HF CHT Nozzle 0.6
 ;M307 H1 R2.796 K0.530:0.000 D6.11 E1.35 S1.00 B0 V23.9
 ;M307 H1 R2.897 K0.551:0.000 D6.38 E1.35 S1.00 B0 V23.9
@@ -193,9 +194,9 @@ M308 S10 A"Chamber" P"0.temp2" Y"thermistor" T100000 B3950
 
 ; MAG PROBE (GND, IO)
 ; -----------
-; This is the mag probe with microswitch in Afterburner
+; This is the Euclid probe with microswitch
 M558 K0 P8 C"121.io2.in" T18000 F180 H10 A10 S0.0025
-G31 K0 P500 X0 Y20 Z9 ;Z7.438
+G31 K0 P500 X0 Y23.5 Z9 ;Z7.438
 
 ; Z-SWITCH
 ; -----------
@@ -249,7 +250,7 @@ M955 P121.0 I05
 M593 P"mzv" F44
 
 ; Pressure advance
-M572 D0 S0.035
+M572 D0 S0.055
 
 ; Custom settings are not defined
 

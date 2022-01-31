@@ -1,12 +1,16 @@
 ; test.g
 ; testing macro parameters
 
-;If {param.Z} = null
-; abort "ABORT - missing Z."
-if exists(param.Z)
-  echo "Got Z!"
-if {!exists(param.Z)}
-  abort "Not got Z!"
-if !{{param.Z} < 100}
-  abort "ABORT - Invalid Z position."
-echo "Tests passed"
+echo {job.filePosition}
+echo {job.file.size}
+echo {job.filePosition/job.file.size}
+
+if {job.filePosition/job.file.size}>=0.0
+  M117 "AKM print completed 10%"
+; end if
+
+if {job.filePosition/job.file.size}>=0.0
+	M117 "AKM print completed 10%"
+
+;if {job.filePosition/job.file.size}>=0.1
+;	M117 "AKM print completed 10%"

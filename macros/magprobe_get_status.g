@@ -8,10 +8,11 @@
 echo "MagProbe trigger value : " , sensors.probes[0].value[0]
 
 if sensors.probes[0].value[0] = 0
-	set global.magprobe_status = "attached"
+  set global.magprobe_status = "attached"
 elif sensors.probes[0].value[0] > 500
-	set global.magprobe_status = "docked"
+  set global.magprobe_status = "docked"
+;end if
 
-; echo global.magprobe_status
+echo global.magprobe_status
 
 

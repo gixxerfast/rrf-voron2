@@ -10,7 +10,8 @@ if !move.axes[0].homed || !move.axes[1].homed
     abort
 ;end if
 
-M98 P"/macros/magprobe_attach.g"
+;M98 P"/macros/magprobe_attach.g"
+M401
 
 ; Lower currents, speed & accel
 M98 P"/macros/set_safe_speed.g"
@@ -41,7 +42,8 @@ echo "Leveling complete"
 ;M98 P"/macros/magprobe_setZ0.g"
 
 M558 K0 H5 F600 
-M98 P"/macros/magprobe_dock.g"
+;M98 P"/macros/magprobe_dock.g"
+M402
 M98 P"/macros/restore_current_z.g"
 M98 P"/macros/restore_current_xy.g"
 M98 P"/macros/set_normal_speed.g"
